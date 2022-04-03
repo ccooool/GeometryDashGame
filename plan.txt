@@ -1,0 +1,109 @@
+What are the core components of the game?
+
+1. player-controlled sprite that jumps over objects
+    - player only controls the sprite jumps, not vertical or left/right movement
+    - the absolute position of the sprite is constant
+2. obstacles and platforms on the map that the sprite can interact with
+    - when you touch a spike -> die -> restart level
+    - platforms that sprite can go onto
+3. scrolling game that moves map horizontally
+4. score in the game: get to the end of level 
+    - each level takes abosolute amount of time to finish
+    
+
+Stretch goals:
+1. special objects that sprite interacts with
+    - orb to flip upside down and boost jumps
+2. Coins
+
+______________________________________
+
+Code Design
+______________________________________
+
+
+- Player/sprite
+
+    class Player():
+        - position: coordinates 
+        - isAlive: boolean
+        - onGround: boolean 
+        - wonLevel: boolean
+        - jumpstrength: integer
+        - spriteImage: -> image file
+
+        - jump()
+        - collide() # check if it is touching something (spike, orb, platform, etc...)
+        - death()
+        - update()
+
+- Map 
+    class Spike():
+        - position: coordinates
+        - image: image file
+
+    class Block():
+        - position: coordinates
+        - image : file
+    
+    class End():
+        - position
+        - image
+
+-Screens:
+- Start Screen
+    - play button
+    - level selection
+    - sprite image selection
+    - quit button
+
+- Death Screen
+    - message
+    - score display
+    - attempt count
+
+- Won Screen
+    - message
+    - exit level/main men
+    - restart
+    
+
+
+==============================================
+1/15/2021
+What is left:
+
+Level loading/creation:
+ ☑ 1. Reading in a csv value to a list of lists
+ ☑ 2. Load the numbers into corresponding objects
+
+Game initialization code:
+☑ load the level list
+☑ load all map sprite images
+ ☑ load font
+☑ initialize progress variables to 0
+    ☑ number of attempts
+    ☑ current screen position 
+☑ set screen size
+☑  start the music
+☑ load background image
+☑ create necesary objects -> Player
+- render the start/welcome page (include intro text)
+☑ start the main loop 
+
+Main Loop:
+☑ main driver function for all the game play
+
+Screen transition functions:
+1. wait_for_input()
+2. reset_level()
+
+Connecting all the pieces:
+how to call functions from different files/classes
+how to pass around information from class to class
+    - using a DAO class?
+        - data access objects
+
+Test out the game
+
+2
