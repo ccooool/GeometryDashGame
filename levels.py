@@ -2,7 +2,7 @@ import csv
 
 import pygame
 from map import *
-from player import Player
+
 
 
 def resize(img, size=(32, 32)):
@@ -88,13 +88,3 @@ def init_level(map_lists, elements):
 
             
             
-"""
-called after player death or level finish to reset level, or hits restart button
-"""
-def reset_level(cur_level, avatar, player, player_sprite, elements):
-    player_sprite = pygame.sprite.Group()
-    elements = pygame.sprite.Group()
-    player = Player(avatar,  (150, 150), elements, player_sprite)
-    init_level(create_map(cur_level), elements)
-    return player
-    

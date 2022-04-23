@@ -3,13 +3,13 @@ from pygame.math import Vector2
 from pygame.draw import rect
 from map import * 
 from screens import * 
+from levels import *
 import os
 
 
 GRAVITY = Vector2(0, 0.86)
 
 class Player(pygame.sprite.Sprite):
-
     
     def __init__(self, avatar, pos, platforms, *groups): 
         super().__init__(*groups)
@@ -48,7 +48,7 @@ class Player(pygame.sprite.Sprite):
 
                     # collision from the side
                     else:
-                        self.vel.x = 0
+                        self.velocity.x = 0
                         self.rect.right = block.rect.left
                         self.dead = True
 
@@ -56,7 +56,7 @@ class Player(pygame.sprite.Sprite):
                     self.won = True
 
     def jump(self):
-        self.vel.y -= self.jump_height
+        self.velocity.y -= self.jump_height
 
     def update(self):
 
@@ -84,3 +84,15 @@ class Player(pygame.sprite.Sprite):
             show_win_screen()
         elif self.dead == True:
             show_death_screen()
+
+
+"""
+called after player death or level finish to reset level, or hits restart button
+"""
+def reset_level(cur_level, avatar, player, player_sprite, elements):
+    player_sprite = pygame.sprite.Group()
+    elements = pygame.sprite.Group()
+    player = Player(avatar,  (150, 150), elements, player_sprite)
+    init_level(create_map(cur_level), elements)
+    return player
+    

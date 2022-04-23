@@ -3,7 +3,6 @@ from tkinter import EventType
 import pygame
 from sqlalchemy import false, true
 from util import BLACK, GREEN, WHITE
-import pygame
 # from main import all_events
 from levels import *
 
@@ -16,7 +15,7 @@ def start_screen(screen, level, avatar, player, player_sprite, elements):
         stretch goals: icon select
     """
     level = 0
-    screen.fill(BLACK)
+    screen.fill(WHITE)
     if pygame.key.get_pressed()[pygame.K_1]:
         level = 0 # TODO: change hardcode
         reset_level(level, avatar, player, player_sprite, elements)
@@ -24,10 +23,10 @@ def start_screen(screen, level, avatar, player, player_sprite, elements):
     start_text = font.render(f"Welcome to CarterDash", True, WHITE)
 
     controls = font.render("Controls: jump: Space/Up, exit: Esc", True, GREEN)
-
+    print("before screen blits in start")
     screen.blits([[start_text, (100,100)], [controls, (100, 400)]])
     # screen.blit(font.render(f"Level {level + 1}.", True, (255, 255, 0)), (100, 200))
-
+    print("after screen blits in start")
 
 
 def show_death_screen(level, avatar, elements, screen, player, player_sprite, seconds):
@@ -61,14 +60,18 @@ def wait_for_input(infoDAO):
     #   - handle the cases of game quit, game restart
     input = False
     while input == False:
-        infoDAO.clock.tick(60)
+        print("waiting for input")
 
-        events = pygame.event.get()
+        infoDAO.clock.tick(60)
+        pygame.display.flip()
         
         if not infoDAO.is_started():
-            infoDAO.set_started(True)
-            start_screen(infoDAO.screen, infoDAO.level, infoDAO.avatar,infoDAO.player, infoDAO.player_sprite, infoDAO.elements)
 
+            infoDAO.set_started(True)
+            print("triggering start screen")
+            start_screen(infoDAO.screen, infoDAO.level, infoDAO.avatar,infoDAO.player, infoDAO.player_sprite, infoDAO.elements)
+    
+        events = pygame.event.get()
         for event in events:
             if event.type == pygame.KEYDOWN:
                 # quit game if escape

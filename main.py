@@ -3,7 +3,7 @@ import pygame
 
 pygame.init()
 import random
-from player import * 
+from player import *
 from screens import *
 from levels import *
 from pygame.math import Vector2
@@ -18,6 +18,9 @@ from infoDAO import InfoDAO
 # what boxes/messages will be displayed on the following screens: 
 # - opening screen 
 # - win screen
+
+
+
 # - death screen
 # - level choose
 # ... etc ...
@@ -63,10 +66,16 @@ pygame.display.set_caption(window_title)
 
 # play music
 music = pygame.mixer_music.load("music/geodash.mp3")
-# pygame.mixer_music.play()
+pygame.mixer_music.set_volume(0.10)
+pygame.mixer_music.play()
 
 # load background image
 bg = pygame.image.load("images/background.png")
+bg = pygame.transform.scale(bg, (800, 600))
+print ("image dimensions: ")
+print(bg.get_height())
+print(bg.get_width())
+
 
 # #load all images
 # spike = pygame.image.load("images/spike.png")
@@ -139,7 +148,7 @@ while exited_game == False:
         player = reset_level(cur_level, avatar, player, player_sprite, elements)
         start = True
 
-    player.vel.x = 5
+    player.velocity.x = 5
     
 
     """
@@ -158,7 +167,7 @@ while exited_game == False:
     player.update()
 
     # move all the elements on the screen to the left
-    CameraX = player.vel.x
+    CameraX = player.velocity.x
     for element in elements:
         element.rect.x -= CameraX
     
