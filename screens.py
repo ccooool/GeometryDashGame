@@ -1,7 +1,5 @@
 from glob import escape
-from tkinter import EventType
 import pygame
-from sqlalchemy import false, true
 from util import BLACK, GREEN, WHITE
 # from main import all_events
 from levels import *
@@ -15,17 +13,19 @@ def start_screen(screen, level, avatar, player, player_sprite, elements):
         stretch goals: icon select
     """
     level = 0
-    screen.fill(WHITE)
+    screen.fill(BLACK)
     if pygame.key.get_pressed()[pygame.K_1]:
         level = 0 # TODO: change hardcode
-        reset_level(level, avatar, player, player_sprite, elements)
+        # reset_level(level, avatar, player, player_sprite, elements)
+    if pygame.key.get_pressed()[pygame.K_2]:
+        level = 1
 
-    start_text = font.render(f"Welcome to CarterDash", True, WHITE)
 
+    start_text = font.render(f"Welcome to CarterDash", True, GREEN)
     controls = font.render("Controls: jump: Space/Up, exit: Esc", True, GREEN)
-    print("before screen blits in start")
+    
     screen.blits([[start_text, (100,100)], [controls, (100, 400)]])
-    # screen.blit(font.render(f"Level {level + 1}.", True, (255, 255, 0)), (100, 200))
+    screen.blit(font.render(f"Level {level + 1}.", True, (255, 255, 0)), (100, 200))
     print("after screen blits in start")
 
 
@@ -66,11 +66,10 @@ def wait_for_input(infoDAO):
         pygame.display.flip()
         
         if not infoDAO.is_started():
-
-            infoDAO.set_started(True)
             print("triggering start screen")
             start_screen(infoDAO.screen, infoDAO.level, infoDAO.avatar,infoDAO.player, infoDAO.player_sprite, infoDAO.elements)
-    
+            print("after start screen in wait function\n")
+
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.KEYDOWN:
@@ -78,9 +77,11 @@ def wait_for_input(infoDAO):
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                 else:
-                    input = true
+                    input = True
+                    infoDAO.set_started(True)
+
     # start = True
-    return true
+    return True
 
 
         

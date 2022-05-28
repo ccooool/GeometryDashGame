@@ -35,6 +35,7 @@ class Player(pygame.sprite.Sprite):
                 # if we are colliding with a platform block
                 if isinstance(block, Block):
                     if going_down > 0:
+                        print("in first case")
                         # when you land on top of a block
                         self.rect.bottom = block.rect.top
                         self.velocity.y = 0
@@ -42,12 +43,12 @@ class Player(pygame.sprite.Sprite):
                         self.isJumping = False # reset jump
 
                     # collision from the top
-                    if going_down < 0:
+                    elif going_down < 0:
                         self.rect.top = block.rect.bottom
-                        self.dead = True
 
                     # collision from the side
                     else:
+                        print("collision with block from side")
                         self.velocity.x = 0
                         self.rect.right = block.rect.left
                         self.dead = True
@@ -58,11 +59,13 @@ class Player(pygame.sprite.Sprite):
     def jump(self):
         self.velocity.y -= self.jump_height
 
-    def update(self):
-
+    def update(self, jumping_status):
+        print("update jumping status: " ,jumping_status)
+        print("dead status:", self.dead)
         # start the jump if necessary
-        if self.isJumping == True:
-            if self.onGround == True:
+        if jumping_status:
+            print("update jumping\n\n")
+            if self.onGround:
                 self.jump()
         
         # middle of jump
@@ -79,17 +82,16 @@ class Player(pygame.sprite.Sprite):
         # y direction collisions
         self.collide(self.velocity.y, self.platforms)
         
-        # evaluate outcomes
-        if self.won == True:
-            show_win_screen()
-        elif self.dead == True:
-            show_death_screen()
-
-
+ 
 """
 called after player death or level finish to reset level, or hits restart button
 """
 def reset_level(cur_level, avatar, player, player_sprite, elements):
+    # restart music
+    music = pygame.mixer_music.load("music/geodash.mp3")
+    pygame.mixer_music.set_volume(0.10)
+    pygame.mixer_music.play()
+
     player_sprite = pygame.sprite.Group()
     elements = pygame.sprite.Group()
     player = Player(avatar,  (150, 150), elements, player_sprite)
