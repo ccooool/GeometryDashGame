@@ -13,6 +13,8 @@ class InfoDAO:
         self.player = player
         self.player_sprite = player_sprite
         self.elements = elements
+        self.won = False
+        self.dead = False
 
     def is_started(self):
         return self.started

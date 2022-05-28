@@ -81,9 +81,9 @@ def init_level(map_lists, elements):
                 End(block, current_position, elements)
 
         # when we move to the right, increase x by one
-            x += 1
+            x += 32
     # when we move down a row, make x 0, make y increase by one
-        y += 1
+        y += 32
         x = 0
 
             

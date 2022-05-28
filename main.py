@@ -101,10 +101,10 @@ alpha_surf = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
 def eval_outcome(win_field, death_field):
     print("win_field: ", win_field, "death_field: ", death_field)
     if win_field == True:
-        show_win_screen(cur_level, avatar, elements, screen, player, player_sprite)
+        show_win_screen(elements, screen, player_sprite, infoDao)
     elif death_field == True:
         # TODO: update seconds alive with proper time
-        show_death_screen(cur_level, avatar, elements, screen, player, player_sprite, 0)
+        show_death_screen(elements, screen, player_sprite, infoDao)
 
 
 exited_game = False
@@ -120,15 +120,18 @@ while exited_game == False:
         exited_game = True
         
     # check if game needs to be started
-    if not start:
-        wait_for_input(infoDao)
-        player = reset_level(cur_level, avatar, player, player_sprite, elements)
-        start = True
 
-    player.velocity.x = 4
+    elif not infoDao.started:
+        wait_for_input(infoDao)
+        player = reset_level(cur_level, avatar, player_sprite, elements, infoDao)
+        player_sprite.add(player)
+        infoDao.started = True
+
+    player.velocity.x = 6
     
     # check if dead or won to show the correct screen
-    eval_outcome(player.won, player.dead)
+    eval_outcome(infoDao.won, infoDao.dead)
+    
 
     # check jumping condition
     if keys[pygame.K_UP] or keys[pygame.K_SPACE]:
@@ -136,7 +139,8 @@ while exited_game == False:
         player.isJumping = True
     
     alpha_surf.fill((255, 255, 255, 1), special_flags=pygame.BLEND_RGBA_MULT)
-    player_sprite.update(player.isJumping)
+    player_sprite.update(player.isJumping, elements, screen, player_sprite, infoDao)
+    print("================================= \n ")
     
     player.isJumping = False
 
